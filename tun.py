@@ -11,16 +11,13 @@ class Tunnel:
         self.dst_port = dst_port
         self.src_host = src_host
         self.src_port = src_port
-        self.from_host = from_host[:-1] # Removes an ending \n
+        self.from_host = from_host[:-1]  # Removes an ending \n
         self.process = None
 
-        self.ssh_config.append('{0}:{1}:{2}'.format(self.dst_port, self.src_host, self.src_port))
+        self.ssh_config.append('\*:{0}:{1}:{2}'.format(self.dst_port, self.src_host, self.src_port))
         self.ssh_config.append(self.from_host)
 
     def establish(self):
-        if self.process and self.process.poll():
-            self.process.terminate()
-
         self.process = subprocess.Popen(self.ssh_config)
 
     def terminate(self):
