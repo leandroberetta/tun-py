@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import subprocess
 import time
 import re
@@ -27,7 +29,7 @@ class Tunnel:
         return self.process.poll() is None
 
     def __str__(self):
-        return 'tunnel: from: {0:16} : {1:6} -> to: localhost : {2:6} '.format(self.src_host, self.src_port, self.dst_port)
+        return 'tunnel established: from: {0:16} : {1:6} -> to: localhost : {2:6} '.format(self.src_host, self.src_port, self.dst_port)
 
 
 if __name__ == '__main__':
@@ -54,7 +56,11 @@ if __name__ == '__main__':
             for tunnel in tunnels:
                 if not tunnel.is_alive():
                     print('restarting ' + str(tunnel))
+
                     tunnel.establish()
+
+                    if tunnel.is_alive():
+                        print(str(tunnel))
 
             time.sleep(1)
         except KeyboardInterrupt:
