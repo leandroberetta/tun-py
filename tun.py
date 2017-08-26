@@ -3,6 +3,7 @@
 import subprocess
 import time
 import re
+import argparse
 
 
 class Tunnel:
@@ -33,6 +34,12 @@ class Tunnel:
 
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Start SSH tunnels.')
+    parser.add_argument('config_file', metavar='config_file', type=str, help='a config file with the SSH tunnels')
+
+    args = parser.parse_args()
+
     tunnels = []
 
     def valid_tunnel(tunnel_line):
@@ -41,7 +48,7 @@ if __name__ == '__main__':
     def tunnel_config_parser(tunnel_line):
         return re.split('[: ]', tunnel_line)
 
-    with open('tun.cfg') as tunnels_config_file:
+    with open(args.config_file) as tunnels_config_file:
         tunnel_lines = filter(lambda tunnel_line: valid_tunnel(tunnel_line), tunnels_config_file.readlines())
 
         for tunnel_line in tunnel_lines:
